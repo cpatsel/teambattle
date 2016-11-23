@@ -324,7 +324,7 @@ function setTheme()
 		team2Name = "FEMALE"
 		team1Model = 15 -- Male Stripper
 		team2Model = 86 -- Female Stripper
-	elseif decider >= 80 and decider <= 90
+	elseif decider >= 80 and decider <= 90 then
 		team1Name = "BIZNESS" --Intentionally Spelled wrong
 		team2Name = "CASUAL"
 		team1Model = 7
