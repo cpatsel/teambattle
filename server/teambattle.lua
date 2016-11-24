@@ -21,7 +21,19 @@ defaultModel = 34 -- Tom Sheldon
 function string.starts(String,Start)
    return string.sub(String,1,string.len(Start))==Start
 end
-
+function findInTable(String,Table)
+	for key, value in pairs(Table) do
+        if value == String then return true end
+    end
+    return false
+end
+function isAuthenticated(player)
+	if (findInTable(player:GetSteamId().string,adminIds) == true) then
+		return true
+	else
+		return false
+	end
+end
 function PlayerChat(args)
 	if (string.starts(args.text, "/vote")) then
 		if gameMode != "vote" then
@@ -42,16 +54,26 @@ function PlayerChat(args)
 		end
 	end
 	if args.text == "/pos" then
-		print(args.player:GetPosition())
-		return false
+		if isAuthenticated(args.player) then
+			print(args.player:GetPosition())
+			return false
+		else
+			args.player:SendChatMessage("Can't do that",colorRed)
+		end
 	end
 	if args.text == "/sg" then
-		args.player:SetNetworkValue("isingame",not args.player:GetValue("isingame"))
-		args.player:SendChatMessage("Toggled game status",colorRadio)
+		if (isAuthenticated(args.player)) then
+			args.player:SetNetworkValue("isingame",not args.player:GetValue("isingame"))
+			args.player:SendChatMessage("Toggled game status",colorRadio)
+		end
 	end
 	if args.text == "/die" then
 		args.player:SetHealth(0.001)
 		return false
+	end
+	if args.text == "/id" then
+		print(args.player:GetSteamId().string)
+		args.player:SendChatMessage("Your steam ID is "..args.player:GetSteamId().string,colorRadio)
 	end
 	if args.text == "/clear" or args.text == "/cls" then
 			for i=0, 13 do
@@ -67,24 +89,25 @@ function PlayerChat(args)
 		return false
 	end
 	if args.text == "/force" then
-		--forceGameStart = true
-		VoteForMap()
-		--StartGame() --Just start the game, for testing purposes.
-	end
-	if args.text == "/start" then
-		if CheckForPlayers() == true then
-			StartGame()
-		else
-			args.player:SendChatMessage("Not enough players are ready!",textColor)
+		if (isAuthenticated(args.player)) then
+			VoteForMap()
 		end
 		return false
 	end
 	if args.text == "/dosh" then
-		args.player:SetMoney(100000)
+		if (isAuthenticated(args.player)) then
+			args.player:SetMoney(100000)
+		end
 		return false
 	end
-	if args.text == "/ff" then
-		args.player:SetModelId(22)
+	if args.text == SECRET_PHRASE then
+		if NEEDS_AUTH_SECRET == true then
+			if (isAuthenticated(args.player)) then
+				args.player:SetModelId(SECRET_MODELID)
+			end
+		else
+			args.player:SetModelId(SECRET_MODELID)
+		end
 		return false
 	end
 	
