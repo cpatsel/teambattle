@@ -1,8 +1,4 @@
 playersReady = 0;
-MIN_PLAYERS = 2;
-VOTE_TIME = 5; --Time for votes in seconds.
-ROUND_TIME = 30 --Time for rounds in minutes
-CHECKPLAYER_TIME = 30 -- Time to wait in-between voting rounds.
 isGameRunning = false
 gameMode = "wait"
 forceGameStart = false
@@ -100,68 +96,7 @@ end
 
 
 
-pregameSpawns = Vector3(-14086.923828,647.565002,-14133.714844)
-Scispawns = {
-	Vector3(11229.243164,295.011841,13629.721680)
-	
-}
 
-oilrigBlueSpawns = {
-	Vector3(13487.761719, 246.000092, 8374.313477),
-	Vector3(13459.677734, 258.000000, 8372.576172)
-}
-oilrigRedSpawns = {
-	Vector3(13117.674805, 245.999710,4877.251953),
-	Vector3(13100.363281, 258.003815,4881.176758)
-}
-
-twofortsRedSpawns = {
-	Vector3(7338.379395, 242.591782, -12402.055664),
-	Vector3(7324.265625, 240.091370, -12389.548828),
-	Vector3(7174.604004, 204.31584, -12096.792969)
-}
-twofortsBlueSpawns = {
-	Vector3(7278.772949, 243.903580, -10833.377930),
-	Vector3(7254.101563, 241.366989, -10816.667969),
-	Vector3(7244.250000, 208.205338, -11270.101563)
-}
-
-snowtownRedSpawns = {
-	Vector3(-3230.736816, 680.172119, -9639.092773),
-	Vector3(-3228.648438, 656.165344, -9618.196289)
-}
-snowtownBlueSpawns = {
-	Vector3(-3411.420654, 640.118652, -8959.943359),
-	Vector3(-3380.758545, 625.964294, -9065.541016)
-}
-metroRedSpawns = {
-	Vector3(-12984.646484, 203.097412, -996.036865),
-	Vector3(-12996.444336, 203.064743, -992.394653),
-	Vector3(-12980.592773, 216.766769, -929.102051)
-}
-metroBlueSpawns = {
-	Vector3(-11945.137695, 203.141068, -1017.165039),
-	Vector3(-11900.509766, 203.097397, -1084.895630),
-	Vector3(-11913.561523, 203.097397, -1084.895630)
-}
-
-dunesRedSpawns = {
-Vector3(-6414.409180, 359.236328, 4041.758301),
-Vector3(-6442.712891, 359.321747, 4069.619629)
-}
-dunesBlueSpawns = {
-Vector3(-5853.285156, 236.827118,2504.569336),
-Vector3(-5873.191406, 236.801682,2486.928955)
-}
-
-bayouRedSpawns = {
-Vector3(-1867.852539, 212.698425, 9927.549805),
-Vector3(-1866.837280, 212.698395, 9970.952148)
-}
-bayouBlueSpawns ={
-Vector3(-5913.595703, 203.541809, 9753.535156),
-Vector3(-5988.159668, 210.843735, 9670.381836)
-}
 mapTime = 13 --The time to set the clock to for the chosen map. Default 13:00
 gameMaps = {"oilrigs", "twoforts", "snowtown", "metro","dunes","bayou"}
 selectedMap = "oilrigs"
