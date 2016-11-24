@@ -238,6 +238,9 @@ end
 function OnPlayerJoin(args)
 	table.insert(totalPlayers,args.player)
 	args.player:SetNetworkValue("isingame", false)
+	args.player:SetNetworkValue("mapvote", "oilrigs")
+	args.player:SetNetworkValue("wp",pregameSpawns)
+	args.player:SetNetworkValue("setwp",false)
 	Chat:Broadcast(args.player:GetName().." has joined", textColor)
 	
 end
@@ -388,14 +391,14 @@ function StartGame()
 			spawnPosition = genericRedSpawns[randomIndex]
 			player:SendChatMessage("[TDM] You are on the " ..team1Name.." team.", colorRed)
 			player:SetModelId(team1Model)
-			print("Set player model to "..team1Model.. "actual: "..player:GetModelId())
+			player:SetNetworkValue("wp",genericBlueSpawns[randomIndex])
 		else
 			table.insert(blueTeam,player)
 			local randomIndex = math.random(1, #genericBlueSpawns)
 			spawnPosition = genericBlueSpawns[randomIndex]
 			player:SendChatMessage("[TDM] You are on the " ..team2Name.." team.", colorBlue)
 			player:SetModelId(team2Model)
-			print("Set player model to "..team2Model.."actual: "..player:GetModelId())
+			player:SetNetworkValue("wp",genericRedSpawns[randomIndex])
 		end
 		counter = counter + 1
 		player:SetPosition(spawnPosition)

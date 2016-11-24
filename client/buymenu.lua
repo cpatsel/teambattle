@@ -1,6 +1,7 @@
+fuck = false
 function BuyMenu:__init()
     self.active = false
-
+	
     self.window = Window.Create()
     self.window:SetSizeRel( Vector2( 0.3, 0.5 ) )
     self.window:SetPositionRel( Vector2( 0.75, 0.5 ) - self.window:GetSizeRel()/2 )
@@ -51,6 +52,7 @@ function BuyMenu:__init()
     Events:Subscribe( "ModuleLoad", self, self.ModulesLoad )
     Events:Subscribe( "ModulesLoad", self, self.ModulesLoad )
     Events:Subscribe( "ModuleUnload", self, self.ModuleUnload )
+
 end
 
 function BuyMenu:CreateCategory( category_name )
@@ -281,5 +283,8 @@ end
 function BuyMenu:Close( args )
     self:SetActive( false )
 end
+
+
+
 
 local buy_menu = BuyMenu()
