@@ -2,11 +2,6 @@ playersReady = 0;
 isGameRunning = false
 gameMode = "wait"
 forceGameStart = false
-textColor = Color(115, 170, 220)
-colorRed = Color(255,0, 0)
-colorGreen = Color(0, 255, 0)
-colorBlue = Color(0, 0, 255)
-colorRadio = Color(255,0,255)
 totalPlayers = {}
 redTeam = {}
 blueTeam = {}
@@ -204,7 +199,9 @@ function OnPlayerJoin(args)
 end
 
 function OnPlayerQuit(args)
+	RemovePlayerFromAnyTeam(args.player)
 	table.remove(totalPlayers,args.player)
+	Chat:Broadcast(args.player:GetName().." has left.", textColor
 end
 timer = Timer()
 function TDMPostTick(args)
@@ -411,6 +408,8 @@ function isInTeam(myplayer)
 	return found
 end
 
+
+--TODO: stop players recieving money for killing themselves.
 function PlayerDeathOrQuit(args)
 	local found = false
 	local isover = false
@@ -473,6 +472,6 @@ Events:Subscribe("PlayerChat", PlayerChat)
 Events:Subscribe("ModuleLoad", FirstLoad)
 Events:Subscribe("PlayerSpawn", PlayerSpawn)
 Events:Subscribe("PlayerDeath", PlayerDeathOrQuit)
-Events:Subscribe("PlayerQuit", PlayerDeathOrQuit)
+Events:Subscribe("PlayerQuit", OnPlayerQuit)
 Events:Subscribe("PostTick",TDMPostTick)
 Events:Subscribe("PlayerJoin",OnPlayerJoin)
