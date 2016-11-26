@@ -11,7 +11,7 @@ team2Name = "BLUE"
 team1Model = 52 -- Govt. Soldier 2
 team2Model = 59 --Roaches Soldier 2
 defaultModel = 34 -- Tom Sheldon
-
+timer = Timer()
 
 function string.starts(String,Start)
    return string.sub(String,1,string.len(Start))==Start
@@ -116,10 +116,11 @@ end
 
 
 mapTime = 13 --The time to set the clock to for the chosen map. Default 13:00
-gameMaps = {"oilrigs", "twoforts", "snowtown", "metro","dunes","bayou"}
+gameMaps = {"oilrigs", "twoforts", "snowtown", "metro","dunes","bayou", "airraid"}
 selectedMap = "oilrigs"
 genericRedSpawns = {}
 genericBlueSpawns = {}
+
 function PickRandomMap()
 local selection = math.random(1,#gameMaps)
 selectedMap = gameMaps[selection]
@@ -162,6 +163,11 @@ function PickMap()
 		genericBlueSpawns = bayouBlueSpawns
 		mapTime = 17
 	end
+	if selectedMap == "airraid" then
+		genericRedSpawns = airraidRedSpawns
+		genericBlueSpawns = airraidBlueSpawns
+		mapTime = 1
+	end
 end
 
 function FirstLoad()
@@ -195,7 +201,6 @@ function OnPlayerJoin(args)
 	args.player:SetNetworkValue("wp",pregameSpawns)
 	args.player:SetNetworkValue("setwp",false)
 	Chat:Broadcast(args.player:GetName().." has joined", textColor)
-	
 end
 
 function OnPlayerQuit(args)
@@ -203,7 +208,7 @@ function OnPlayerQuit(args)
 	table.remove(totalPlayers,args.player)
 	Chat:Broadcast(args.player:GetName().." has left.", textColor)
 end
-timer = Timer()
+
 function TDMPostTick(args)
 
 	if gameMode == "wait" then
