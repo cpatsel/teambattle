@@ -201,7 +201,7 @@ end
 function OnPlayerQuit(args)
 	RemovePlayerFromAnyTeam(args.player)
 	table.remove(totalPlayers,args.player)
-	Chat:Broadcast(args.player:GetName().." has left.", textColor
+	Chat:Broadcast(args.player:GetName().." has left.", textColor)
 end
 timer = Timer()
 function TDMPostTick(args)
