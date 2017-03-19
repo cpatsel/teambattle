@@ -16,6 +16,9 @@ timer = Timer()
 function string.starts(String,Start)
    return string.sub(String,1,string.len(Start))==Start
 end
+function square(num)
+	return num*num
+end
 function findInTable(String,Table)
 	for key, value in pairs(Table) do
         if value == String then return true end
@@ -120,6 +123,7 @@ gameMaps = {"oilrigs", "twoforts", "snowtown", "metro","dunes","bayou", "airraid
 selectedMap = "oilrigs"
 genericRedSpawns = {}
 genericBlueSpawns = {}
+maxDistFromSpawn = 100000 -- The maximum radius a player can travel from their spawn without being killed in squared meters.
 
 function PickRandomMap()
 local selection = math.random(1,#gameMaps)
@@ -132,17 +136,20 @@ function PickMap()
 	if selectedMap == "oilrigs" then
 		genericRedSpawns = oilrigRedSpawns
 		genericBlueSpawns = oilrigBlueSpawns
+		maxDistFromSpawn = 8000
 		mapTime = 13
 	end
 	if selectedMap == "twoforts" then
 		genericRedSpawns = twofortsRedSpawns
 		genericBlueSpawns = twofortsBlueSpawns
 		mapTime = 15
+		maxDistFromSpawn = 2000
 	end
 	if selectedMap == "snowtown" then
 		genericRedSpawns = snowtownRedSpawns
 		genericBlueSpawns = snowtownBlueSpawns
 		mapTime = 23
+		maxDistFromSpawn = 2000
 	end
 	if selectedMap == "metro" then
 		genericRedSpawns = metroRedSpawns
@@ -152,21 +159,25 @@ function PickMap()
 		if (mapTime == 0) then mapTime = 3
 		else mapTime = 10
 		end
+		maxDistFromSpawn = 4000
 	end
 	if selectedMap == "dunes" then
 		genericRedSpawns = dunesRedSpawns
 		genericBlueSpawns = dunesBlueSpawns
 		mapTime = 12
+		maxDistFromSpawn = 4000
 	end
 	if selectedMap == "bayou" then
 		genericRedSpawns = bayouRedSpawns
 		genericBlueSpawns = bayouBlueSpawns
 		mapTime = 17
+		maxDistFromSpawn = 10000
 	end
 	if selectedMap == "airraid" then
 		genericRedSpawns = airraidRedSpawns
 		genericBlueSpawns = airraidBlueSpawns
 		mapTime = 1
+		maxDistFromSpawn = 1000
 	end
 end
 
@@ -205,7 +216,11 @@ end
 
 function OnPlayerQuit(args)
 	RemovePlayerFromAnyTeam(args.player)
-	table.remove(totalPlayers,args.player)
+	for index, player in ipairs(totalPlayers) do
+		if (player == args.player) then
+			table.remove(totalPlayers, index)
+		end
+	end
 	Chat:Broadcast(args.player:GetName().." has left.", textColor)
 end
 
@@ -231,6 +246,21 @@ function TDMPostTick(args)
 		if (timer:GetMinutes() >= ROUND_TIME) then
 			Chat:Broadcast("[TDM] Time Up! Draw game!", colorRadio)
 			KickAllPlayersBack(true)
+		--After 1 minute, make sure no player has run away from the battle.
+		--Starting checking after 1 minute will allow all players to spawn properly.
+		elseif (timer:GetMinutes() > 1) then 
+			for index, player in ipairs(redTeam) do
+				
+				if (Vector3.DistanceSqr(player:GetPosition(),genericRedSpawns[1]) > square(maxDistFromSpawn)) then
+						player:SetHealth(0);print(Vector3.DistanceSqr(player:GetPosition(),genericRedSpawns[1]))
+				end
+			end
+			for index, player in ipairs(blueTeam) do
+				print(Vector3.DistanceSqr(player:GetPosition(),genericRedSpawns[1]))
+				if (Vector3.DistanceSqr(player:GetPosition(),genericBlueSpawns[1]) > square(maxDistFromSpawn)) then
+						player:SetHealth(0);print(Vector3.DistanceSqr(player:GetPosition(),genericBlueSpawns[1]))
+				end
+			end
 		end
 	end
 end
