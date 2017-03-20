@@ -36,6 +36,7 @@ end
 
 
 mapTime = 13 --The time to set the clock to for the chosen map. Default 13:00
+mapWeather = 0 --Weather severity 0-2. Default clear (0)
 gameMaps = {"airraid","resort","island","harbor","twoforts","coast","snowtown","metro","dunes","oilrigs","bayou"}
 selectedMap = "airraid"
 genericRedSpawns = {}
@@ -55,18 +56,21 @@ function PickMap()
 		genericBlueSpawns = oilrigBlueSpawns
 		maxDistFromSpawn = 8000
 		mapTime = 13
+		mapWeather = 0
 	end
 	if selectedMap == "twoforts" then
 		genericRedSpawns = twofortsRedSpawns
 		genericBlueSpawns = twofortsBlueSpawns
 		mapTime = 15
-		maxDistFromSpawn = 2000
+		maxDistFromSpawn = 4000
+		mapWeather = 0
 	end
 	if selectedMap == "snowtown" then
 		genericRedSpawns = snowtownRedSpawns
 		genericBlueSpawns = snowtownBlueSpawns
 		mapTime = 23
 		maxDistFromSpawn = 2000
+		mapWeather = 1
 	end
 	if selectedMap == "metro" then
 		genericRedSpawns = metroRedSpawns
@@ -77,48 +81,56 @@ function PickMap()
 		else mapTime = 10
 		end
 		maxDistFromSpawn = 4000
+		mapWeather = 0
 	end
 	if selectedMap == "dunes" then
 		genericRedSpawns = dunesRedSpawns
 		genericBlueSpawns = dunesBlueSpawns
 		mapTime = 12
 		maxDistFromSpawn = 4000
+		mapWeather = 0
 	end
 	if selectedMap == "bayou" then
 		genericRedSpawns = bayouRedSpawns
 		genericBlueSpawns = bayouBlueSpawns
 		mapTime = 17
 		maxDistFromSpawn = 10000
+		mapWeather = 1.5
 	end
 	if selectedMap == "airraid" then
 		genericRedSpawns = airraidRedSpawns
 		genericBlueSpawns = airraidBlueSpawns
 		mapTime = 1
 		maxDistFromSpawn = 1000
+		mapWeather = 1
 	end
 	if selectedMap == "coast" then
 		genericRedSpawns = coastRedSpawns
 		genericBlueSpawns = coastBlueSpawns
 		mapTime = 17
 		maxDistFromSpawn = 2000
+		mapWeather = 1
 	end
 	if selectedMap == "harbor" then
 		genericRedSpawns = harborRedSpawns
 		genericBlueSpawns = harborBlueSpawns
 		mapTime = 12
-		maxDistFromSpawn = 1000
+		maxDistFromSpawn = 2000
+		mapWeather = 2
 	end
 	if selectedMap == "island" then
 		genericRedSpawns = islandRedSpawns
 		genericBlueSpawns = islandBlueSpawns
 		mapTime = 9
 		maxDistFromSpawn = 1000
+		mapWeather = 0
 	end
 	if selectedMap == "resort" then
 		genericRedSpawns = resortRedSpawns
 		genericBlueSpawns = resortBlueSpawns
 		mapTime = 5
 		maxDistFromSpawn = 1000
+		mapWeather = 2
 	end
 end
 
@@ -193,13 +205,12 @@ function TDMPostTick(args)
 			for index, player in ipairs(redTeam) do
 				
 				if (Vector3.DistanceSqr(player:GetPosition(),genericRedSpawns[1]) > square(maxDistFromSpawn)) then
-						player:SetHealth(0);print(Vector3.DistanceSqr(player:GetPosition(),genericRedSpawns[1]))
+						player:SetHealth(0);
 				end
 			end
 			for index, player in ipairs(blueTeam) do
-				print(Vector3.DistanceSqr(player:GetPosition(),genericRedSpawns[1]))
 				if (Vector3.DistanceSqr(player:GetPosition(),genericBlueSpawns[1]) > square(maxDistFromSpawn)) then
-						player:SetHealth(0);print(Vector3.DistanceSqr(player:GetPosition(),genericBlueSpawns[1]))
+						player:SetHealth(0)
 				end
 			end
 		end
@@ -300,6 +311,8 @@ function KickAllPlayersBack(drawGame)
 		end
 		gameMode = "wait"
 		timer:Restart()
+		mapWeather = 0
+		DefaultWorld:SetWeatherSeverity(mapWeather)
 	end
 end
 
@@ -341,6 +354,7 @@ function StartGame()
 		player:SetHealth(1)
 	end
 	DefaultWorld:SetTime(mapTime)
+	DefaultWorld:SetWeatherSeverity(mapWeather)
 	timer:Restart()
 end
  
